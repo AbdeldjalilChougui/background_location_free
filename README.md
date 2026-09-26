@@ -323,13 +323,22 @@ Vendor-specific settings are collected at
 
 ## Limitations
 
-- **Not tested on a real device or emulator.** The Kotlin compiles
-  (`compileDebugKotlin`), and the pure logic is covered by JUnit tests:
-  config parsing, notification data, the ring buffer, the distance and
-  interval filter, API-level branching and routing. The Dart API is covered
-  with mocked channels. The service, `LocationManager` calls, notification,
-  boot receiver and headless engine start-up have not been exercised end to
-  end.
+- The Kotlin logic (config parsing, notification data, the ring buffer, the
+  distance and interval filter, API-level branching, routing and the plugin
+  manifest) has JUnit tests, and the Dart API has mocked-channel tests.
+- The example app has an emulator integration test (`example/integration_test/`,
+  run with `dart run tool/run_on_device.dart <applicationId>` from `example/`).
+  It checks `status()` before and after `pm grant`, the `permission_denied`,
+  `not_running` and `start_not_allowed` errors, that the service runs in the
+  foreground with type `location`, fixes injected with `adb emu geo fix`
+  (in order, `isMocked` false), a `cmd location` test provider (`isMocked`
+  true, and `provider_disabled` on the stream while it replaces `gps`),
+  `updateNotification` in `dumpsys notification`, buffering with
+  `drainBuffered()`, the headless callback while the UI is in the background,
+  and `stop()`.
+- Not tested end to end: `restartOnBoot` after a real reboot, a sticky restart
+  after the process is killed, and the headless callback after the task is
+  swiped away from Recents (that would stop the test itself).
 - `highAccuracy` uses the `gps` provider only (with `network` as a fallback
   when GPS is absent), so indoor fixes can be slow. `balanced` and `lowPower`
   use `network`, which some de-Googled ROMs lack or back with a separate
@@ -345,6 +354,8 @@ Vendor-specific settings are collected at
   force-stopped apps until the user opens them again.
 - The event stream is shared: every access to `locations` returns the same
   broadcast stream.
+
+**Tested on:** Android Emulator, Pixel 10 image, API 37 (physical phone not tested).
 
 ## License
 
