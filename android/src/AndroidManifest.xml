@@ -1,0 +1,27 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      Declared here because the service below needs them on every app.
+      The app declares ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION, and only
+      if it needs them: ACCESS_BACKGROUND_LOCATION, POST_NOTIFICATIONS and
+      RECEIVE_BOOT_COMPLETED. See the README.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
+    <application>
+        <service
+            android:name="dev.abdeldjalilchougui.background_location_free.LocationService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <receiver
+            android:name="dev.abdeldjalilchougui.background_location_free.BootReceiver"
+            android:enabled="false"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

@@ -1,4 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- background_location_free: location permissions (required). -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Only if fixes must flow when the service starts while the app is not visible. -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- Android 13+: lets the service notification show in the drawer. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Only for LocationConfig(restartOnBoot: true). -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:label="background_location_free_example"
         android:name="${applicationName}"
